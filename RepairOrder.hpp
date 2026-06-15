@@ -20,7 +20,6 @@ public:
         : orderId(id), customer(c), console(std::move(cons)), laborCost(labor) {}
     
     void addRepairItem(std::string partName, double cost, int quantity) {
-        // Enforcing a real invariant via exceptions
         if (cost <= 0) {
             throw std::invalid_argument("Part cost must be strictly positive.");
         }
@@ -29,7 +28,6 @@ public:
 
     double calculateTotalCost() const noexcept {
         double total = laborCost;
-        // Range-based loop used as requested (no <algorithm>)
         for (const auto& item : usedParts) { 
             total += item.calculateSubtotal();
         }
@@ -40,11 +38,10 @@ public:
         std::cout << "\n TICKET: " << orderId << " .\n";
         std::cout << "Customer: " << customer->getContactInfo() << "\n";
         
-        // Polymorphic dispatch! Calls the specific override
         std::cout << "Device Diagnostic: " << console->diagnoseHardware() << "\n";
         std::cout << "Parts Used:\n";
         for (const auto& item : usedParts) {
-            std::cout << "  - " << item << "\n"; // uses overloaded operator<<
+            std::cout << "  - " << item << "\n"; 
         }
         std::cout << "Labor Cost: $" << laborCost << "\n";
         std::cout << "TOTAL: $" << calculateTotalCost() << "\n";
